@@ -1,82 +1,26 @@
-import java.util.Date;
+//AAMINA BINTE KHURRAM
 
-public class SecuritySystem {
+import java.util.Date; //importing Date class
+
+public abstract class SecuritySystem {
+
+    //-----------------------------attributes common to main class and all subclasses----------------------------------
+
     private Date dateOfInstallation;
     private String placeOfInstallation;
     private boolean isOn;
     private boolean isWorking;
+    boolean insideSubClass;
 
-    private void switchOn() {
-        System.out.println("Element has been switched on.");
-        isOn = true;
+    //-----------------------------methods common to main class and all subclasses----------------------------------
 
-    }
+    public abstract void switchOn(); //switching on element
 
-    private void switchOff() {
-        System.out.println("Element has been switched off." );
-        isOn = false;
-    }
+    public abstract void switchOff(); //switching off element
 
-    private void reset() {
-        System.out.println("Element has been reset." );
-        isOn = false;
-    }
+    public void reset() { isWorking = true;} //resetting element
 
-    public SecuritySystem() {
-        this.dateOfInstallation = new Date();
-        this.placeOfInstallation = "Islamabad";
-        this.isOn = false;
-        this.isWorking = true;
-    }
-
-    public SecuritySystem(Date dateOfInstallation, String placeOfInstallation, boolean isOn, boolean isWorking) {
-        this.dateOfInstallation = dateOfInstallation;
-        this.placeOfInstallation = placeOfInstallation;
-        this.isOn = isOn;
-        this.isWorking = isWorking;
-    }
-
-    public SecuritySystem(Date dateOfInstallation, String placeOfInstallation, boolean isOn) {
-        this.dateOfInstallation = dateOfInstallation;
-        this.placeOfInstallation = placeOfInstallation;
-        this.isOn = isOn;
-        this.isWorking = true;
-    }
-
-    public SecuritySystem(Date dateOfInstallation, String placeOfInstallation) {
-        this.dateOfInstallation = dateOfInstallation;
-        this.placeOfInstallation = placeOfInstallation;
-        this.isOn = false;
-        this.isWorking = true;
-    }
-
-    public SecuritySystem(Date dateOfInstallation) {
-        this.dateOfInstallation = dateOfInstallation;
-        this.placeOfInstallation = "Islamabad";
-        this.isOn = false;
-        this.isWorking = true;
-    }
-
-    public SecuritySystem(boolean isOn) {
-        this.isOn = isOn;
-        this.dateOfInstallation = new Date();
-        this.placeOfInstallation = "Islamabad";
-        this.isWorking = true;
-    }
-
-    public SecuritySystem(boolean isOn, boolean isWorking) {
-        this.isOn = isOn;
-        this.isWorking = isWorking;
-        this.dateOfInstallation = new Date();
-        this.placeOfInstallation = "Islamabad";
-    }
-
-    public SecuritySystem(String placeOfInstallation) {
-        this.placeOfInstallation = placeOfInstallation;
-        this.dateOfInstallation = new Date();
-        this.isOn = false;
-        this.isWorking = true;
-    }
+    //SETTERS AND GETTERS
 
     public Date getDateOfInstallation() {
         return dateOfInstallation;
@@ -98,7 +42,7 @@ public class SecuritySystem {
         return isOn;
     }
 
-    public void getIsOn(boolean on_offState) {
+    public void setIsOn(boolean on_offState) {
         this.isOn = on_offState;
     }
 
@@ -109,9 +53,43 @@ public class SecuritySystem {
     public void setWorking(boolean working) {
         isWorking = working;
     }
-    public static void main(String[] args){
-        Date today = new Date();
-        System.out.println(today);
+
+    //toString()
+
+    public String toString() {
+        //if call to super.toString() is from within a subclass, class name is not included in main toString()
+        // to avoid redundancy
+        if (insideSubClass) {
+            return (
+                    "\nCalling toString() of class SecuritySystem:\n" + "\n" +
+                            "Date of installation: " + getDateOfInstallation() + "\nPlace of installation: " + getPlaceOfInstallation() +
+                            "\nOn/off state: " + (getIsOn() ? "on" : "off") + "\nDevice function/malfunction: " + (isWorking() ? "functioning" : "out-of-order") +
+                            "\n\n"
+            );
+        } else {
+            return (
+                    "\nCalling toString() of class SecuritySystem:\nAn object of " + this.getClass().getName() + "class.\n" +
+                            "Date of installation: " + getDateOfInstallation() + "\nPlace of installation: " + getPlaceOfInstallation() +
+                            "\nOn/off state: " + (getIsOn() ? "on" : "off") + "\nDevice function/malfunction: " + (isWorking() ? "functioning" : "out-of-order") +
+                            "\n\n"
+            );
+        }
+    }
+
+    //---------------------------------------constructors---------------------------------------------------------------
+    //default
+    public SecuritySystem() {
+        setDateOfInstallation(new Date());
+        setPlaceOfInstallation("Islamabad");
+        this.isOn = true;
+        setWorking(true);
+    }
+    //completely parametrized
+    public SecuritySystem(Date dateOfInstallation, String placeOfInstallation, boolean isOn, boolean isWorking) {
+        setDateOfInstallation(dateOfInstallation);
+        setPlaceOfInstallation(placeOfInstallation);
+        this.isOn = isOn;
+        setWorking(isWorking);
     }
 }
 
